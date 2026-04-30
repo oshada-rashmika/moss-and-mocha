@@ -11,7 +11,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
   { name: "Menu", href: "/menu" },
-  { name: "Contact Us", href: "#contact" },
+  { name: "Contact Us", href: "/#contact" },
 ];
 
 export const Navbar = () => {
@@ -61,7 +61,7 @@ export const Navbar = () => {
     }
 
     // Specialized Contact Scroll Logic
-    if (href === "#contact") {
+    if (href === "/#contact") {
       if (pathname === "/") {
         e.preventDefault();
         document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
@@ -74,7 +74,7 @@ export const Navbar = () => {
   // Strict Pathname & Scroll-Driven Evaluation Matrix
   const getIsActive = (linkHref: string) => {
     // Contact Us logic: Only active if on home page AND in contact viewport
-    if (linkHref === "#contact") {
+    if (linkHref === "/#contact") {
       return pathname === "/" && activeSection === "contact";
     }
 
