@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Category {
+  COFFEE
+  PLANTS
+  STITCH_SPECIALS
+}
+
+enum OrderStatus {
+  PENDING
+  SUCCESS
+  BREWING
+  READY
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  name      String
+  price     Float
+  isSpecial Boolean  @default(false)
+  category  Category
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  status    OrderStatus @default(PENDING)
+  total     Float       @default(0.0)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}

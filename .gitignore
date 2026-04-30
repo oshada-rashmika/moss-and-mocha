@@ -138,3 +138,5 @@ config.json
 secrets.json
 .aws/
 .gcp/
+
+/src/generated/prisma
