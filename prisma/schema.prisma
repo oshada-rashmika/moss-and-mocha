@@ -1,15 +1,19 @@
+// This technical stack utilizes NestJS, Prisma, and PostgreSQL via Supabase.
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-enum Category {
-  COFFEE
-  PLANTS
-  STITCH_SPECIALS
+enum MainCategory {
+  BREWS
+  BOTANICALS
+  AESTHETIC_LABELS
+  BARISTA_CLASSICS
 }
 
 enum OrderStatus {
@@ -20,13 +24,15 @@ enum OrderStatus {
 }
 
 model Product {
-  id        String   @id @default(uuid())
-  name      String
-  price     Float
-  isSpecial Boolean  @default(false)
-  category  Category
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String       @id @default(uuid())
+  name         String
+  price        Float
+  image        String       // Placeholder image URL
+  mainCategory MainCategory
+  subCategory  String       // e.g., "Pacific Cold Brews" or "Mocha"
+  isSpecial    Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }
 
 model Order {
