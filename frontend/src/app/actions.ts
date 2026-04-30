@@ -12,6 +12,13 @@ export interface FeaturedProduct {
   subCategory: string;
 }
 
+export interface Review {
+  id: string;
+  name: string;
+  rating: number;
+  comment: string;
+}
+
 export async function getFeaturedProducts(): Promise<FeaturedProduct[]> {
   try {
     const result = await query(
@@ -24,6 +31,18 @@ export async function getFeaturedProducts(): Promise<FeaturedProduct[]> {
     return result.rows;
   } catch (error) {
     console.error("Error fetching featured products:", error);
+    return [];
+  }
+}
+
+export async function getReviews(): Promise<Review[]> {
+  try {
+    const result = await query(
+      `SELECT id, name, rating, comment FROM "Review" ORDER BY "createdAt" DESC;`
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
     return [];
   }
 }

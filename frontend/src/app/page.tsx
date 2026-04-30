@@ -4,6 +4,7 @@ import { Hero } from "@/components/Hero";
 import { CategoryRibbon } from "@/components/CategoryRibbon";
 import { AboutSection } from "@/components/AboutSection";
 import { FeaturedProducts } from "@/components/FeaturedProducts";
+import { ReviewsSection } from "@/components/ReviewsSection";
 import { ContactSection } from "@/components/ContactSection";
 import { useStitchCart } from "@/context/stitch-cart-context";
 
@@ -28,32 +29,9 @@ export default function Home() {
       {/* About Section / Narrative Bridge */}
       <AboutSection />
 
-      {/* Featured Products / Artisanal Selection */}
       <FeaturedProducts />
 
-      {/* Feature Section / Menu Teaser */}
-      <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div className="space-y-4 p-8 rounded-3xl bg-[#fdfbf7] border border-sage-green/10 hover:shadow-2xl transition-all duration-500">
-            <h3 className="text-2xl font-serif text-moss-green">Organic Blends</h3>
-            <p className="text-foreground/70 leading-relaxed">
-              Ethically sourced beans met with hand-picked moss accents for a grounding coffee experience.
-            </p>
-          </div>
-          <div className="space-y-4 p-8 rounded-3xl bg-[#fdfbf7] border border-sage-green/10 hover:shadow-2xl transition-all duration-500">
-            <h3 className="text-2xl font-serif text-moss-green">Biophilic Space</h3>
-            <p className="text-foreground/70 leading-relaxed">
-              Designed to breathe. Our cafe environment uses living walls and natural light to restore your spirit.
-            </p>
-          </div>
-          <div className="space-y-4 p-8 rounded-3xl bg-[#fdfbf7] border border-sage-green/10 hover:shadow-2xl transition-all duration-500">
-            <h3 className="text-2xl font-serif text-moss-green">Artisanal Mocha</h3>
-            <p className="text-foreground/70 leading-relaxed">
-              Rich, dark chocolate infused with subtle forest notes, creating a unique signature flavor profile.
-            </p>
-          </div>
-        </div>
-      </section>
+      <ReviewsSection />
 
       <ContactSection />
 

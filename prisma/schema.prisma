@@ -40,3 +40,13 @@ model Order {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @default(now()) @updatedAt
 }
+
+model Review {
+  id        String   @id @default(uuid())
+  name      String
+  rating    Int      @default(5)
+  comment   String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
