@@ -1,13 +1,56 @@
-import React from 'react';
+ "use client";
+import React from "react";
+import { useStitchCart } from "@/context/stitch-cart-context";
 
 export default function Home() {
+  const { addToCart, clearCart, itemCount, subtotal, feedback, dismissFeedback } =
+    useStitchCart();
+
+  const feedbackToneClasses =
+    feedback?.tone === "success"
+      ? "bg-moss-green/15 text-moss-green border-moss-green/30"
+      : feedback?.tone === "warning"
+        ? "bg-hibiscus-pink/20 text-[#7c3345] border-hibiscus-pink/40"
+        : "bg-stitch-blue/15 text-stitch-blue border-stitch-blue/30";
+
   return (
-    <main className="flex-1 flex flex-col items-center justify-center p-8 sm:p-20 relative overflow-hidden bg-gradient-to-br from-background to-[#eaf5e1] dark:from-background dark:to-[#162911]">
+    <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-20 relative overflow-hidden bg-gradient-to-br from-background to-[#eaf5e1] dark:from-background dark:to-[#162911]">
       {/* Background decorations */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-hibiscus-pink/20 blur-[100px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-stitch-blue/20 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="z-10 max-w-4xl w-full">
+        <div className="mb-8 rounded-2xl border border-white/30 dark:border-white/15 bg-white/70 dark:bg-black/30 backdrop-blur-md p-4 sm:p-6">
+          <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-3">
+            <div>
+              <p className="text-sm text-foreground/70">Stitch Cart</p>
+              <p className="text-lg font-semibold">
+                {itemCount} item{itemCount === 1 ? "" : "s"} · ${subtotal.toFixed(2)}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() =>
+                  addToCart({
+                    id: "stitch-blue-pack",
+                    name: "Stitch Blue Accent Pack",
+                    price: 19.99,
+                  })
+                }
+                className="px-4 py-2 rounded-full bg-stitch-blue text-white text-sm font-medium hover:bg-stitch-blue/90 transition-all active:scale-95"
+              >
+                Add Accent Pack
+              </button>
+              <button
+                onClick={clearCart}
+                className="px-4 py-2 rounded-full bg-white dark:bg-white/10 text-moss-green dark:text-white text-sm font-medium border border-moss-green/20 dark:border-white/10 hover:bg-moss-green/5 dark:hover:bg-white/20 transition-all active:scale-95"
+              >
+                Clear Cart
+              </button>
+            </div>
+          </div>
+        </div>
+
         <header className="text-center mb-16 space-y-6">
           <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-moss-green/10 text-moss-green dark:bg-moss-green/20 dark:text-[#b4db9c] border border-moss-green/20 shadow-sm backdrop-blur-md mb-4 transition-transform hover:scale-105">
             <span className="text-sm font-medium tracking-wide uppercase">Nature Inspired Design</span>
@@ -64,6 +107,36 @@ export default function Home() {
           </button>
         </div>
       </div>
+
+      {feedback && (
+        <div
+          className={
+            feedback.placement === "inline"
+              ? "z-20 mt-4 w-full max-w-sm px-4"
+              : "z-20 fixed bottom-6 right-6 max-w-md px-4"
+          }
+        >
+          <div
+            className={`rounded-2xl border px-4 py-3 shadow-xl backdrop-blur-md ${feedbackToneClasses}`}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-sm sm:text-base font-medium leading-snug">
+                {feedback.message}
+                <span className="ml-2 text-xs opacity-80">
+                  ({feedback.viewport === "tiny" ? "tiny screen" : "wide display"} mode)
+                </span>
+              </p>
+              <button
+                onClick={dismissFeedback}
+                className="text-xs font-semibold opacity-80 hover:opacity-100"
+                aria-label="Dismiss cart feedback"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
