@@ -1,149 +1,81 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export const Hero = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  
-  // Magnetic Button Logic
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  
-  const springConfig = { damping: 15, stiffness: 150 };
-  const springX = useSpring(x, springConfig);
-  const springY = useSpring(y, springConfig);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!buttonRef.current) return;
-    const { left, top, width, height } = buttonRef.current.getBoundingClientRect();
-    const centerX = left + width / 2;
-    const centerY = top + height / 2;
-    
-    const distanceX = e.clientX - centerX;
-    const distanceY = e.clientY - centerY;
-    
-    // Magnetic pull distance
-    const threshold = 150;
-    if (Math.abs(distanceX) < threshold && Math.abs(distanceY) < threshold) {
-      x.set(distanceX * 0.4);
-      y.set(distanceY * 0.4);
-    } else {
-      x.set(0);
-      y.set(0);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   return (
     <section 
-      className="relative w-full h-screen overflow-hidden bg-white flex flex-col md:flex-row items-center"
-      onMouseMove={handleMouseMove}
+      className="relative w-full h-screen overflow-hidden bg-white flex flex-col md:flex-row items-center justify-center px-6 md:px-12"
     >
-      {/* Background Interlocking Layers: 'M&M' */}
+      {/* Layer 1: Background Interlocking Typography 'M&M' */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-        <h2 className="font-serif text-[40vw] leading-none tracking-tighter opacity-[0.03] flex items-center">
-          <span className="text-sage-green z-0">M</span>
-          <span className="text-black z-20 mx-[-5vw]">&</span>
-          <span className="text-sage-green z-0">M</span>
+        <h2 
+          className="font-serif text-sage-green opacity-10 italic leading-none tracking-tighter"
+          style={{
+            fontSize: "clamp(12rem, 35vw, 45rem)",
+          }}
+        >
+          M&M
         </h2>
       </div>
 
-      {/* Vertical Accent: EST. 2026 */}
-      <div className="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 flex-col items-center gap-4 z-30">
-        <div className="w-px h-24 bg-black/10" />
-        <span className="[writing-mode:vertical-lr] text-[10px] font-medium tracking-[0.5em] text-black/40 uppercase rotate-180">
+      {/* Vertical Accent: EST. 2026 (Grouped with content) */}
+      <div className="hidden md:flex absolute left-12 top-1/2 -translate-y-1/2 flex-col items-center gap-6 z-20">
+        <div className="w-px h-16 bg-black/10" />
+        <span className="[writing-mode:vertical-lr] text-[11px] font-medium tracking-[0.6em] text-[#1A1A1A]/40 uppercase rotate-180">
           EST. 2026
         </span>
-        <div className="w-px h-24 bg-black/10" />
+        <div className="w-px h-16 bg-black/10" />
       </div>
 
-      {/* Left Column (60%): Typography Focus */}
-      <div className="w-full md:w-[60%] h-full flex flex-col justify-center px-8 md:px-24 z-10">
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
-        >
-          <h1 className="font-serif text-5xl md:text-[7vw] leading-[1.1] text-[#1A1A1A] max-w-4xl">
-            Artisanal Brews <br />
-            <span className="text-sage-green">&</span> <span className="italic">Botanical</span> <br />
-            Wonders
-          </h1>
-          
-          <p className="mt-8 text-black/60 font-light text-sm md:text-base max-w-md leading-relaxed tracking-wide">
-            A curated sanctuary where high-fashion aesthetics meet the grounding soul of organic coffee. Experience the silence of nature in every sip.
-          </p>
+      <div className="relative z-10 w-full max-w-7xl flex flex-col md:flex-row items-center justify-between h-full py-12 md:py-0">
+        
+        {/* Left Column (60%): Typography Focus */}
+        <div className="w-full md:w-[55%] flex flex-col justify-center text-center md:text-left space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+            className="space-y-6"
+          >
+            <h1 className="font-serif text-5xl md:text-[6.5vw] leading-[1.05] text-[#1A1A1A] tracking-tight">
+              Artisanal Brews <br />
+              <span className="text-sage-green italic"> & </span> <br />
+              Botanical Wonders
+            </h1>
+            
+            <div className="w-12 h-[1px] bg-sage-green mx-auto md:mx-0 opacity-40" />
+            
+            <p className="text-[#1A1A1A] font-sans font-light text-sm md:text-base max-w-md leading-relaxed tracking-[0.15em] uppercase opacity-70">
+              Where every leaf tells a story and every cup holds a secret.
+            </p>
+          </motion.div>
+        </div>
 
-          <div className="mt-12">
-            <motion.button
-              ref={buttonRef}
-              style={{ x: springX, y: springY }}
-              onMouseLeave={handleMouseLeave}
-              className="group relative px-10 py-4 text-[#1A1A1A] font-semibold tracking-widest uppercase text-xs transition-all duration-300"
-            >
-              <span className="relative z-10">Explore the Menu</span>
-              
-              {/* Luxury Underline / Full Fill */}
-              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-terracotta transition-all duration-500 group-hover:h-full group-hover:bg-terracotta/10" />
-            </motion.button>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Right Column (40%): Visual Focus */}
-      <div className="w-full md:w-[40%] h-[50vh] md:h-full relative flex items-center justify-center p-8 md:p-0">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
-          className="relative w-full h-full max-h-[70vh] aspect-[4/5] z-10"
-        >
-          {/* Organic Leaf-Shape Mask for hero.png */}
-          <div 
-            className="relative w-full h-full overflow-hidden shadow-2xl transition-all duration-700"
-            style={{
-              clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)", // Hand-drawn/Organic leaf-ish shape
-            }}
+        {/* Right Column (40%): Visual Focus (Unclipped Asset) */}
+        <div className="w-full md:w-[45%] h-full flex items-center justify-center mt-12 md:mt-0">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+            className="relative w-full max-h-[60vh] md:max-h-[80vh] aspect-square md:aspect-auto h-full flex items-center justify-center"
           >
             <Image
               src="/hero.png"
-              alt="Artisanal Brews"
-              fill
-              className="object-cover scale-110 hover:scale-100 transition-transform duration-[2s] ease-out"
+              alt="Artisanal Brews and Botanical Wonders"
+              width={800}
+              height={1000}
+              priority
+              className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
             />
-          </div>
-
-          {/* "Stitch" Detail: Motion-path SVG sewing the edge */}
-          <svg className="absolute -inset-4 w-[calc(100%+32px)] h-[calc(100%+32px)] pointer-events-none z-20">
-             <motion.path
-                d="M 50 10 Q 110 50 100 120 T 50 230" // Abstract stitch path
-                fill="none"
-                stroke="var(--color-sage-green)"
-                strokeWidth="2"
-                strokeDasharray="5 10"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ 
-                  pathLength: 1, 
-                  opacity: 1,
-                  transition: { duration: 3, repeat: Infinity, repeatType: "reverse", ease: "linear" }
-                }}
-             />
-          </svg>
-        </motion.div>
-        
-        {/* Abstract Background Element */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-sage-green/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+          </motion.div>
+        </div>
       </div>
 
-      {/* Decorative Bottom Line */}
-      <div className="absolute bottom-12 left-24 right-24 h-px bg-black/5 hidden md:block" />
+      {/* Subtle Bottom Aesthetic Line */}
+      <div className="absolute bottom-16 left-24 right-24 h-px bg-black/5 hidden md:block" />
     </section>
   );
 };
