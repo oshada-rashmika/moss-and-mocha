@@ -4,6 +4,7 @@ import "./globals.css";
 import { AppProviders } from "./providers";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { LoadingScreen } from "@/components/LoadingScreen";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-white">
         <AppProviders>
+          <LoadingScreen />
           <Navbar />
           <main className="flex-1">
             {children}
