@@ -4,12 +4,15 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  // Note: url is managed in prisma.config.ts for Prisma 7+
 }
 
-enum Category {
-  COFFEE
-  PLANTS
-  STITCH_SPECIALS
+enum MainCategory {
+  BREWS
+  BOTANICALS
+  AESTHETIC_LABELS
+  BARISTA_CLASSICS
+  BOBA
 }
 
 enum OrderStatus {
@@ -20,13 +23,15 @@ enum OrderStatus {
 }
 
 model Product {
-  id        String   @id @default(uuid())
-  name      String
-  price     Float
-  isSpecial Boolean  @default(false)
-  category  Category
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String       @id @default(uuid())
+  name         String
+  price        Float
+  image        String
+  mainCategory MainCategory
+  subCategory  String
+  isSpecial    Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
 }
 
 model Order {
@@ -34,5 +39,15 @@ model Order {
   status    OrderStatus @default(PENDING)
   total     Float       @default(0.0)
   createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  updatedAt DateTime    @default(now()) @updatedAt
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  name      String
+  rating    Int      @default(5)
+  comment   String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }

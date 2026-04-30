@@ -14,6 +14,10 @@
   --color-stitch-blue: #00A3E0;
   --color-moss-green: #2D4F1E;
   --color-hibiscus-pink: #FFB7C5;
+  --color-sage-green: #78866B;
+  --color-terracotta: #E2725B;
+  --color-forest-green: #1B2E1E;
+  --color-cream: #F5F5DC;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +25,10 @@
     --background: #0f1c0b;
     --foreground: #f4f7f2;
   }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
