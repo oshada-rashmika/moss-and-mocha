@@ -8,18 +8,22 @@ import Image from "next/image";
 export const AboutSection = () => {
   return (
     <section className="relative w-full h-screen bg-white overflow-hidden flex flex-col items-center justify-center px-6 md:px-12">
-      {/* Decorative Botanical Accent */}
+      {/* Decorative Botanical Accent with Seamless Blending */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.8, rotate: -15 }}
-        whileInView={{ opacity: 0.15, scale: 1, rotate: 0 }}
+        whileInView={{ opacity: 0.25, scale: 1, rotate: 0 }}
         transition={{ duration: 2, ease: "easeOut" }}
-        className="absolute -top-24 -right-24 md:-top-48 md:-right-48 w-64 h-64 md:w-[600px] md:h-[600px] pointer-events-none select-none z-0"
+        className="absolute -top-24 -right-24 md:-top-32 md:-right-32 w-64 h-64 md:w-[700px] md:h-[700px] pointer-events-none select-none z-0"
+        style={{
+          maskImage: "radial-gradient(circle at center, black 30%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(circle at center, black 30%, transparent 80%)",
+        }}
       >
         <Image
           src="/botanical-accent.png"
           alt="Botanical Accent"
           fill
-          className="object-contain filter drop-shadow-[0_20px_40px_rgba(120,134,107,0.4)]"
+          className="object-contain mix-blend-multiply"
         />
       </motion.div>
 
@@ -29,7 +33,7 @@ export const AboutSection = () => {
         {/* Pre-Heading */}
         <motion.span
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 0.4, y: 0 }}
+          whileInView={{ opacity: 0.5, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: "easeOut" }}
           className="text-[#1A1A1A] text-[10px] md:text-xs font-semibold tracking-[0.6em] uppercase"
@@ -49,23 +53,23 @@ export const AboutSection = () => {
           Artisanal Soul
         </motion.h2>
 
-        {/* Narrative Text */}
+        {/* Narrative Text - Sri Lankan Soul */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 0.7, y: 0 }}
+          whileInView={{ opacity: 0.8, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, delay: 0.4, ease: [0.23, 1, 0.32, 1] }}
           className="space-y-6 max-w-2xl"
         >
           <p className="font-sans font-light text-base md:text-lg leading-relaxed text-[#1A1A1A]">
-            Born from the misty ridges of Hawaii and the grounding scent of fresh espresso, Moss & Mocha is more than a cafe—it's a biophilic sanctuary. We believe that true luxury lies in the balance between the wild and the refined.
+            Rooted in the lush highlands of Sri Lanka and inspired by the rhythmic spirit of Hawaii, Moss & Mocha is a biophilic sanctuary. We believe that true luxury lies in the balance between the wild and the refined.
           </p>
           <p className="font-sans font-light text-base md:text-lg leading-relaxed text-[#1A1A1A]">
             Every blend is ethically sourced, and every space is designed to breathe, inviting you to reconnect with the silence of the earth while savoring the craft of the artisanal hand.
           </p>
         </motion.div>
 
-        {/* Learn More Button */}
+        {/* Learn More Button with Full Continuous 'Stitch-trace' */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -83,22 +87,21 @@ export const AboutSection = () => {
               {/* Soft Terracotta Bottom Border */}
               <div className="absolute bottom-0 left-0 w-full h-[2px] bg-terracotta transition-all duration-500 group-hover:h-full group-hover:bg-terracotta/5" />
 
-              {/* 'Stitch-trace' Hover Animation */}
-              <svg className="absolute -inset-[2px] w-[calc(100%+4px)] h-[calc(100%+4px)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              {/* 'Stitch-trace' Hover Animation - Continuous Loop */}
+              <svg className="absolute -inset-[1px] w-[calc(100%+2px)] h-[calc(100%+2px)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-visible">
                 <motion.rect
-                  x="1"
-                  y="1"
-                  width="calc(100% - 2px)"
-                  height="calc(100% - 2px)"
+                  x="0"
+                  y="0"
+                  width="100%"
+                  height="100%"
                   fill="none"
                   stroke="var(--color-sage-green)"
                   strokeWidth="1.5"
-                  strokeDasharray="4 6"
                   initial={{ pathLength: 0 }}
                   variants={{
                     hover: { 
                       pathLength: 1,
-                      transition: { duration: 1.2, ease: "easeInOut" }
+                      transition: { duration: 1, ease: "easeInOut" }
                     }
                   }}
                 />
