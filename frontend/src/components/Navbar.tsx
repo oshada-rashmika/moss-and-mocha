@@ -50,26 +50,39 @@ export const Navbar = () => {
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Specialized Home Scroll Logic
+    if (href === "/") {
+      if (pathname === "/") {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        history.replaceState(null, "", "/");
+        setActiveSection(""); // Clear any active scroll section
+      }
+    }
+
+    // Specialized Contact Scroll Logic
     if (href === "#contact") {
       if (pathname === "/") {
         e.preventDefault();
         document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-        setActiveSection("contact"); // Explicitly set active on click
+        setActiveSection("contact");
       }
     }
     setIsOpen(false);
   };
 
-  // Strict Pathname & Section Evaluation Matrix
+  // Strict Pathname & Scroll-Driven Evaluation Matrix
   const getIsActive = (linkHref: string) => {
     // Contact Us logic: Only active if on home page AND in contact viewport
     if (linkHref === "#contact") {
       return pathname === "/" && activeSection === "contact";
     }
 
-    // Home logic: Active only if on home page AND NOT in contact viewport
+    // Home logic: Active only if on home page AND NOT in contact viewport AND near top
     if (linkHref === "/") {
-      return pathname === "/" && activeSection !== "contact";
+      if (pathname !== "/") return false;
+      // If we're not in the contact section, Home is the default active state for the landing page
+      return activeSection !== "contact";
     }
 
     // Standard Page logic: Absolute pathname match
