@@ -16,6 +16,8 @@
   --color-hibiscus-pink: #FFB7C5;
   --color-sage-green: #78866B;
   --color-terracotta: #E2725B;
+  --color-forest-green: #1B2E1E;
+  --color-cream: #F5F5DC;
 }
 
 @media (prefers-color-scheme: dark) {

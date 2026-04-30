@@ -1,10 +1,17 @@
- "use client";
-import React from "react";
+"use client";
+
 import { Hero } from "@/components/Hero";
+import { CategoryRibbon } from "@/components/CategoryRibbon";
 import { useStitchCart } from "@/context/stitch-cart-context";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const { addToCart, itemCount, subtotal, feedback, dismissFeedback } = useStitchCart();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const feedbackToneClasses =
     feedback?.tone === "success"
@@ -17,6 +24,9 @@ export default function Home() {
     <main className="flex-1 flex flex-col min-h-screen bg-white">
       {/* Hero Section */}
       <Hero />
+
+      {/* Category Ribbon / Visual Bridge */}
+      <CategoryRibbon />
 
       {/* Feature Section / Menu Teaser */}
       <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full">
@@ -43,7 +53,7 @@ export default function Home() {
       </section>
 
       {/* Cart Feedback Notification */}
-      {feedback && (
+      {mounted && feedback && (
         <div className="z-[110] fixed bottom-6 right-6 max-w-md px-4">
           <div className={`rounded-2xl border px-4 py-3 shadow-2xl backdrop-blur-md ${feedbackToneClasses}`}>
             <div className="flex items-start justify-between gap-3">
