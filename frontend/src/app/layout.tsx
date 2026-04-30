@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "./providers";
+import { Navbar } from "@/components/Navbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -14,8 +15,8 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Stitch Nature App",
-  description: "A beautiful Next.js app with Stitch Nature theme",
+  title: "Moss & Mocha | Biophilic Coffee Experience",
+  description: "A premium coffee brand merging organic moss aesthetics with sophisticated mocha blends.",
 };
 
 export default function RootLayout({
@@ -29,7 +30,10 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          <Navbar />
+          {children}
+        </AppProviders>
       </body>
     </html>
   );
