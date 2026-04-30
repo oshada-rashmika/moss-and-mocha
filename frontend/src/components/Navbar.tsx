@@ -36,7 +36,7 @@ export const Navbar = () => {
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.6, rootMargin: "-10% 0px -10% 0px" }
     );
 
     const contactSection = document.getElementById("contact");
@@ -54,11 +54,26 @@ export const Navbar = () => {
       if (pathname === "/") {
         e.preventDefault();
         document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        // Let normal Link navigation to /#contact happen
+        setActiveSection("contact"); // Explicitly set active on click
       }
     }
     setIsOpen(false);
+  };
+
+  // Strict Pathname & Section Evaluation Matrix
+  const getIsActive = (linkHref: string) => {
+    // Contact Us logic: Only active if on home page AND in contact viewport
+    if (linkHref === "#contact") {
+      return pathname === "/" && activeSection === "contact";
+    }
+
+    // Home logic: Active only if on home page AND NOT in contact viewport
+    if (linkHref === "/") {
+      return pathname === "/" && activeSection !== "contact";
+    }
+
+    // Standard Page logic: Absolute pathname match
+    return pathname === linkHref;
   };
 
   return (
@@ -94,7 +109,7 @@ export const Navbar = () => {
                 className="relative group py-2"
               >
                 <span className={`transition-colors duration-500 font-serif font-medium tracking-wide text-sm ${
-                  (link.href === "#contact" && activeSection === "contact") || pathname === link.href
+                  getIsActive(link.href)
                     ? "text-sage-green"
                     : "text-[#1A1A1A] group-hover:text-sage-green"
                 }`}>
@@ -105,7 +120,7 @@ export const Navbar = () => {
                 <motion.span 
                   initial={false}
                   animate={{ 
-                    scaleX: ((link.href === "#contact" && activeSection === "contact") || pathname === link.href) ? 1 : 0 
+                    scaleX: getIsActive(link.href) ? 1 : 0 
                   }}
                   className="absolute bottom-1 left-0 right-0 h-[1px] bg-sage-green origin-left group-hover:scale-x-100 transition-transform duration-700 cubic-bezier(0.23, 1, 0.32, 1)"
                 />
@@ -195,7 +210,7 @@ export const Navbar = () => {
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.href)}
                       className={`text-4xl font-serif transition-all duration-300 ${
-                        (link.href === "#contact" && activeSection === "contact") || pathname === link.href
+                        getIsActive(link.href)
                           ? "text-sage-green"
                           : "text-[#1A1A1A] hover:text-sage-green"
                       }`}
