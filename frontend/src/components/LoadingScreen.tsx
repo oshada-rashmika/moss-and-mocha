@@ -28,42 +28,35 @@ export const LoadingScreen = () => {
               ease: [0.22, 1, 0.36, 1] 
             }
           }}
-          className="fixed inset-0 z-[9999] bg-[#1A2421] flex flex-col items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center overflow-hidden"
         >
-          <div className="relative flex flex-col items-center gap-12">
-            {/* The Asset: Leaf-masked GIF */}
+          <div className="flex flex-col items-center gap-12 max-w-sm w-full px-6">
+            {/* The Asset: Clean, unobstructed GIF */}
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ 
                 type: "spring", 
-                stiffness: 100, 
+                stiffness: 80, 
                 damping: 20,
                 delay: 0.2 
               }}
-              className="relative w-48 h-48 md:w-64 md:h-64"
+              className="relative w-64 h-64 md:w-80 md:h-80"
             >
-              <div 
-                className="w-full h-full overflow-hidden border-2 border-[#F2B8C6]/30 shadow-[0_0_40px_rgba(242,184,198,0.1)]"
-                style={{ 
-                  borderRadius: "60% 40% 70% 30% / 30% 60% 40% 70%", // Organic Leaf Shape
-                }}
-              >
-                <Image
-                  src="/stitch-sad.gif"
-                  alt="Stitch Reveal"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
+              <Image
+                src="/stitch-sad.gif"
+                alt="Stitch Reveal"
+                fill
+                className="object-contain"
+                priority
+              />
             </motion.div>
 
-            {/* Typography: Pulsing Sanctuary Message */}
+            {/* Typography: High-Contrast Message */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ 
-                opacity: [0.4, 1, 0.4],
+                opacity: [0.5, 1, 0.5],
                 y: 0 
               }}
               transition={{ 
@@ -78,18 +71,14 @@ export const LoadingScreen = () => {
                 },
                 delay: 0.5
               }}
-              className="text-center space-y-2"
+              className="text-center space-y-4"
             >
-              <p className="font-serif text-[#FDFCF0] text-sm md:text-base tracking-[0.3em] uppercase font-light">
+              <p className="font-serif text-[#1A1A1A] text-sm md:text-base tracking-[0.4em] uppercase">
                 Preparing your sanctuary
               </p>
-              <div className="w-12 h-px bg-[#FDFCF0]/20 mx-auto" />
+              <div className="w-16 h-px bg-sage-green/20 mx-auto" />
             </motion.div>
           </div>
-
-          {/* Decorative Corner Accents */}
-          <div className="absolute top-12 left-12 w-12 h-12 border-t border-l border-[#FDFCF0]/10" />
-          <div className="absolute bottom-12 right-12 w-12 h-12 border-b border-r border-[#FDFCF0]/10" />
         </motion.div>
       )}
     </AnimatePresence>
