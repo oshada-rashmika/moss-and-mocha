@@ -207,16 +207,17 @@ export default function MenuPage() {
                     src={product.image || "/placeholder.png"}
                     alt={product.name}
                     fill
-                    className="object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100"
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                    priority={index < 6}
                   />
                   
                   {/* Quick Add Overlay */}
                   <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
-                  <div className="absolute bottom-6 left-6 right-6 translate-y-12 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                  <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-20">
                     <button 
                       onClick={() => addToCart(product)}
-                      className="w-full bg-[#1A1A1A] text-[#FDFCF0] py-4 text-[10px] font-bold uppercase tracking-[0.4em] flex items-center justify-center gap-3 relative overflow-hidden"
+                      className="w-full bg-[#1A1A1A] text-[#FDFCF0] py-5 text-[10px] font-bold uppercase tracking-[0.4em] flex items-center justify-center gap-3 relative overflow-hidden"
                     >
                       <span>Quick Add</span>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
