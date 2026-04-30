@@ -14,6 +14,8 @@
   --color-stitch-blue: #00A3E0;
   --color-moss-green: #2D4F1E;
   --color-hibiscus-pink: #FFB7C5;
+  --color-sage-green: #78866B;
+  --color-terracotta: #E2725B;
 }
 
 @media (prefers-color-scheme: dark) {
