@@ -6,11 +6,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 const navLinks = [
-  { name: "The Blend", href: "#blend" },
-  { name: "Our Moss", href: "#moss" },
-  { name: "Mocha Menu", href: "#menu" },
-  { name: "Biophilic Art", href: "#art" },
-  { name: "Visit Us", href: "#visit" },
+  { name: "Home", href: "/" },
+  { name: "About Us", href: "/about" },
+  { name: "Menu", href: "/menu" },
+  { name: "Contact Us", href: "/contact" },
 ];
 
 export const Navbar = () => {
@@ -27,25 +26,25 @@ export const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+      className={`sticky top-0 left-0 right-0 z-[100] transition-all duration-300 ease-in-out ${
         scrolled
-          ? "py-3 backdrop-blur-md bg-[var(--background)]/20 border-b border-foreground/5 shadow-sm"
-          : "py-6 bg-transparent"
+          ? "py-3 bg-white/95 backdrop-blur-md border-b border-black/5 shadow-sm"
+          : "py-5 bg-white shadow-sm"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo Evolution */}
         <Link href="/" className="relative z-50">
           <motion.h1
-            className="font-serif text-moss-green font-bold tracking-tight"
+            className="font-serif font-bold tracking-tight"
             style={{
               fontSize: "clamp(1.25rem, 4vw, 2rem)",
             }}
             animate={{
-              scale: scrolled ? 0.9 : 1,
+              scale: scrolled ? 0.95 : 1,
             }}
           >
-            Moss <span className="text-hibiscus-pink">&</span> Mocha
+            <span className="text-moss-green">Moss</span> <span className="text-hibiscus-pink">&</span> <span className="text-moss-green">Mocha</span>
           </motion.h1>
         </Link>
 
@@ -57,7 +56,7 @@ export const Navbar = () => {
               href={link.href}
               className="relative group py-2"
             >
-              <span className="text-foreground/80 group-hover:text-moss-green transition-colors duration-300 font-medium">
+              <span className="text-[#1A1A1A] group-hover:text-moss-green transition-colors duration-300 font-semibold tracking-wide uppercase text-sm">
                 {link.name}
               </span>
               
@@ -70,7 +69,7 @@ export const Navbar = () => {
               />
               
               {/* Soft Glow Interaction */}
-              <div className="absolute inset-0 -z-10 bg-[var(--color-moss-green)] opacity-0 group-hover:opacity-5 blur-2xl transition-all duration-700 rounded-full scale-50 group-hover:scale-150" />
+              <div className="absolute inset-0 -z-10 bg-moss-green opacity-0 group-hover:opacity-5 blur-2xl transition-all duration-700 rounded-full scale-50 group-hover:scale-150" />
             </Link>
           ))}
         </div>
@@ -86,7 +85,7 @@ export const Navbar = () => {
                 src="/menu.png" 
                 alt="Menu" 
                 fill 
-                className={`object-contain transition-all duration-700 ${isOpen ? 'rotate-180 scale-90 sepia-[.5]' : 'rotate-0'}`}
+                className={`object-contain transition-all duration-700 ${isOpen ? 'rotate-180 scale-90 invert' : 'rotate-0'}`}
              />
           </div>
         </button>
@@ -99,7 +98,7 @@ export const Navbar = () => {
               animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
               exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
               transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-              className="fixed inset-0 z-40 md:hidden bg-[var(--background)]/98 backdrop-blur-3xl flex flex-col items-center justify-center"
+              className="fixed inset-0 z-40 md:hidden bg-white flex flex-col items-center justify-center"
             >
               <div className="flex flex-col items-center gap-10">
                 {navLinks.map((link, index) => (
@@ -122,7 +121,7 @@ export const Navbar = () => {
                     <Link
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="text-4xl font-serif text-foreground hover:text-moss-green transition-all duration-300 relative group"
+                      className="text-4xl font-serif text-[#1A1A1A] hover:text-moss-green transition-all duration-300 relative group"
                     >
                       {link.name}
                       <span className="absolute -bottom-2 left-0 w-0 h-px bg-moss-green group-hover:w-full transition-all duration-500" />
@@ -132,7 +131,7 @@ export const Navbar = () => {
               </div>
               
               {/* Decorative Background Element */}
-              <div className="absolute top-0 right-0 p-12 -z-10 opacity-10">
+              <div className="absolute top-0 right-0 p-12 -z-10 opacity-5">
                  <div className="w-64 h-64 bg-moss-green rounded-full blur-3xl animate-pulse" />
               </div>
             </motion.div>
