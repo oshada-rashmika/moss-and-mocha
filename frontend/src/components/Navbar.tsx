@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useStitchCart } from "@/context/stitch-cart-context";
@@ -10,22 +11,55 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
   { name: "Menu", href: "/menu" },
-  { name: "Contact Us", href: "/contact" },
+  { name: "Contact Us", href: "#contact" },
 ];
 
 export const Navbar = () => {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const { itemCount, items, subtotal, removeFromCart } = useStitchCart();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+
+    // Intersection Observer for active section highlighting
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const contactSection = document.getElementById("contact");
+    if (contactSection) observer.observe(contactSection);
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href === "#contact") {
+      if (pathname === "/") {
+        e.preventDefault();
+        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        // Let normal Link navigation to /#contact happen
+      }
+    }
+    setIsOpen(false);
+  };
 
   return (
     <nav
@@ -56,15 +90,24 @@ export const Navbar = () => {
               <Link
                 key={link.name}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className="relative group py-2"
               >
-                <span className="text-[#1A1A1A] group-hover:text-sage-green transition-colors duration-500 font-serif font-medium tracking-wide text-sm">
+                <span className={`transition-colors duration-500 font-serif font-medium tracking-wide text-sm ${
+                  (link.href === "#contact" && activeSection === "contact") || pathname === link.href
+                    ? "text-sage-green"
+                    : "text-[#1A1A1A] group-hover:text-sage-green"
+                }`}>
                   {link.name}
                 </span>
                 
                 {/* Underline Reveal */}
                 <motion.span 
-                  className="absolute bottom-1 left-0 right-0 h-[1px] bg-sage-green origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 cubic-bezier(0.23, 1, 0.32, 1)"
+                  initial={false}
+                  animate={{ 
+                    scaleX: ((link.href === "#contact" && activeSection === "contact") || pathname === link.href) ? 1 : 0 
+                  }}
+                  className="absolute bottom-1 left-0 right-0 h-[1px] bg-sage-green origin-left group-hover:scale-x-100 transition-transform duration-700 cubic-bezier(0.23, 1, 0.32, 1)"
                 />
               </Link>
             ))}
@@ -150,8 +193,12 @@ export const Navbar = () => {
                   >
                     <Link
                       href={link.href}
-                      onClick={() => setIsOpen(false)}
-                      className="text-4xl font-serif text-[#1A1A1A] hover:text-sage-green transition-all duration-300"
+                      onClick={(e) => handleNavClick(e, link.href)}
+                      className={`text-4xl font-serif transition-all duration-300 ${
+                        (link.href === "#contact" && activeSection === "contact") || pathname === link.href
+                          ? "text-sage-green"
+                          : "text-[#1A1A1A] hover:text-sage-green"
+                      }`}
                     >
                       {link.name}
                     </Link>
