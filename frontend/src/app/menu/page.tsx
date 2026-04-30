@@ -68,6 +68,64 @@ const sortOptions = [
   { id: "NAME_AZ", label: "Botanical Name (A-Z)" }
 ];
 
+const SortSelector = ({ value, onChange, options }: { value: string; onChange: (val: string) => void; options: typeof sortOptions }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedOption = options.find(opt => opt.id === value);
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 bg-transparent font-serif text-sm text-[#1A1A1A] border-b border-black/10 pb-1 outline-none min-w-[140px] justify-between group"
+      >
+        <span>{selectedOption?.label}</span>
+        <svg 
+          width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+          className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+        >
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <div className="fixed inset-0 z-30" onClick={() => setIsOpen(false)} />
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+              className="absolute top-full right-0 mt-2 z-40 bg-[#1A1A1A] rounded-xl shadow-2xl overflow-hidden min-w-[220px] border border-white/10"
+            >
+              {options.map((opt) => (
+                <button
+                  key={opt.id}
+                  onClick={() => {
+                    onChange(opt.id);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full text-left px-6 py-4 text-[13px] font-serif transition-all duration-300 flex items-center justify-between group ${
+                    value === opt.id ? "text-[#FDFCF0]" : "text-[#FDFCF0]/40 hover:text-[#FDFCF0] hover:bg-white/5"
+                  }`}
+                >
+                  <span className={value === opt.id ? "font-medium" : ""}>{opt.label}</span>
+                  {value === opt.id && (
+                    <motion.div 
+                      layoutId="active-sort-dot"
+                      className="w-1.5 h-1.5 rounded-full bg-[#F2B8C6] shadow-[0_0_8px_rgba(242,184,198,0.4)]"
+                    />
+                  )}
+                </button>
+              ))}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 export default function MenuPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("ALL");
@@ -165,15 +223,11 @@ export default function MenuPage() {
           {/* Sort Selector */}
           <div className="flex items-center gap-4">
             <span className="text-[9px] uppercase tracking-widest text-black/40 font-bold">Sort By</span>
-            <select 
+            <SortSelector 
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-transparent font-serif text-sm text-[#1A1A1A] outline-none cursor-pointer border-b border-black/10 pb-1"
-            >
-              {sortOptions.map(opt => (
-                <option key={opt.id} value={opt.id}>{opt.label}</option>
-              ))}
-            </select>
+              onChange={setSortBy}
+              options={sortOptions}
+            />
           </div>
         </div>
       </section>
