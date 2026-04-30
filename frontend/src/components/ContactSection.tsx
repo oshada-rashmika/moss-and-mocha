@@ -9,9 +9,6 @@ const initialState: ContactActionState = {
   message: "",
 };
 
-const inputBase =
-  "peer w-full bg-transparent border-0 border-b border-[#FDFCF0]/35 px-0 pt-5 pb-3 text-[#FDFCF0] placeholder:text-transparent outline-none transition-all duration-300 focus:border-[#FFB7C5] focus:[box-shadow:0_2px_0_0_#FFB7C5]";
-
 export function ContactSection() {
   const [state, formAction, isPending] = useActionState(submitContactInquiry, initialState);
   const [name, setName] = useState("");
@@ -19,7 +16,6 @@ export function ContactSection() {
   const [message, setMessage] = useState("");
 
   const hasSuccess = state.status === "success";
-  const hasError = state.status === "error";
 
   const mapSrc = useMemo(
     () =>
@@ -28,215 +24,189 @@ export function ContactSection() {
   );
 
   return (
-    <section className="w-full bg-[#1B2E1E] py-24 md:py-32 px-6 md:px-12 overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-[1fr_1.1fr] gap-12 md:gap-16">
+    <section className="w-full bg-[#1B2E1E] py-32 md:py-48 px-6 md:px-12 overflow-hidden selection:bg-[#FFB7C5]/30">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-24">
+        
+        {/* Left Column: Contact Info & Socials (5 Cols) */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="space-y-9"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
+          className="md:col-span-5 space-y-16"
         >
-          <div className="space-y-4">
+          <div className="space-y-6">
             <motion.p
-              initial={{ opacity: 0, x: -12 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.05, duration: 0.5 }}
-              className="text-sage-green italic font-serif text-lg"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-sage-green italic font-serif text-lg md:text-xl tracking-tight"
             >
               Inquiries, collaborations, or a seat at our table.
             </motion.p>
-            <h2 className="text-[#FDFCF0] font-serif text-4xl md:text-6xl tracking-tight">
-              Connect with the Sanctuary
+            <h2 className="text-[#FDFCF0] font-serif text-5xl md:text-7xl leading-[0.95] tracking-tighter">
+              Connect with <br />
+              the Sanctuary
             </h2>
-            <motion.span
-              initial={{ width: 0 }}
-              whileInView={{ width: "8.5rem" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="block h-px bg-[#78866B]"
-            />
           </div>
 
-          <div className="space-y-4 text-[#FDFCF0]">
-            <p className="font-serif text-xl">contact@mossnmocha.com</p>
-            <p className="font-serif text-xl">+94 74 030 4576</p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <a
-              href="#"
-              aria-label="Facebook"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#FDFCF0]/35 text-[#FDFCF0] transition-all duration-300 hover:bg-[#E2725B] hover:border-[#E2725B] hover:text-[#1B2E1E]"
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <path d="M13.2 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5h1.7V4c-.3 0-1.3-.1-2.5-.1-2.4 0-4 1.5-4 4.2V10H7.3v3h2.6v8h3.3z" />
-              </svg>
-            </a>
-            <a
-              href="#"
-              aria-label="Instagram"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#FDFCF0]/35 text-[#FDFCF0] transition-all duration-300 hover:bg-[#E2725B] hover:border-[#E2725B] hover:text-[#1B2E1E]"
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2z" />
-                <path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10z" />
-                <circle cx="16.7" cy="5.9" r="1.2" />
-              </svg>
-            </a>
-          </div>
-
-          <div className="rounded-3xl overflow-hidden border border-[#FDFCF0]/15 shadow-[inset_0_0_40px_rgba(0,0,0,0.35)] bg-[#1F3322]">
-            <div className="relative">
-              <iframe
-                title="NSBM Green University Map"
-                src={mapSrc}
-                className="w-full h-[320px] md:h-[380px] border-0 grayscale brightness-[0.5] contrast-125 saturate-[0.6] hue-rotate-[8deg]"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#1B2E1E]/45 via-transparent to-[#102016]/55" />
+          <div className="space-y-12">
+            <div className="space-y-2">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-sage-green font-bold">Email Us</p>
+              <a href="mailto:contact@mossnmocha.com" className="block text-2xl md:text-3xl font-serif text-[#FDFCF0] hover:text-[#FFB7C5] transition-colors duration-500 underline decoration-[#FDFCF0]/10 underline-offset-8">
+                contact@mossnmocha.com
+              </a>
             </div>
+            <div className="space-y-2">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-sage-green font-bold">Call Us</p>
+              <p className="text-2xl md:text-3xl font-serif text-[#FDFCF0]">
+                +94 74 030 4576
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <motion.a
+              href="https://www.facebook.com/mossnmocha"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              whileHover={{ y: -4 }}
+              className="group relative flex h-14 w-14 items-center justify-center rounded-full border border-[#FDFCF0]/25 text-[#FDFCF0] transition-colors duration-300 hover:border-[#FFB7C5]"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </motion.a>
+            <motion.a
+              href="https://www.instagram.com/mossnmocha"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              whileHover={{ y: -4 }}
+              className="group relative flex h-14 w-14 items-center justify-center rounded-full border border-[#FDFCF0]/25 text-[#FDFCF0] transition-colors duration-300 hover:border-[#FFB7C5]"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+              </svg>
+            </motion.a>
           </div>
         </motion.div>
 
-        <div className="pt-2 md:pt-6">
+        {/* Right Column: Form & Map (7 Cols) */}
+        <div className="md:col-span-7 space-y-24">
           <AnimatePresence mode="wait">
             {hasSuccess ? (
               <motion.div
                 key="success"
-                initial={{ opacity: 0, y: 22 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                className="min-h-[360px] flex flex-col items-start justify-center text-left"
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-[#1F3322] p-12 rounded-[2rem] border border-[#FDFCF0]/10"
               >
-                <motion.div
-                  initial={{ scale: 0.7, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.1, type: "spring", stiffness: 180, damping: 14 }}
-                  className="h-14 w-14 rounded-full bg-[#FFB7C5]/15 text-[#FFB7C5] flex items-center justify-center mb-5"
-                >
-                  <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12l4.2 4.2L19 6.5" />
-                  </svg>
-                </motion.div>
-                <h3 className="text-4xl font-serif text-[#FDFCF0]">Message Sent</h3>
-                <p className="mt-3 text-[#FDFCF0]/75">{state.message}</p>
+                <h3 className="text-4xl font-serif text-[#FDFCF0] mb-4">Gratitude.</h3>
+                <p className="text-sage-green leading-relaxed text-lg italic">{state.message}</p>
               </motion.div>
             ) : (
               <motion.form
                 key="form"
                 action={formAction}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.35 }}
-                className="space-y-8"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="space-y-12"
               >
-                <label className="relative block">
-                  <motion.span
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "100%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="absolute bottom-0 left-0 h-px bg-[#FDFCF0]/30"
-                  />
-                  <input
-                    name="name"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    className={inputBase}
-                    placeholder="Name"
-                    required
-                  />
-                  <span
-                    className={`absolute left-0 text-[11px] tracking-[0.24em] uppercase font-medium text-[#78866B] transition-all duration-300 ${
-                      name ? "top-0" : "top-5"
-                    } peer-focus:top-0 peer-focus:text-[#FFB7C5]`}
-                  >
-                    Name
-                  </span>
-                </label>
-
-                <label className="relative block">
-                  <motion.span
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "100%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.05 }}
-                    className="absolute bottom-0 left-0 h-px bg-[#FDFCF0]/30"
-                  />
-                  <input
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    className={inputBase}
-                    placeholder="Email"
-                    required
-                  />
-                  <span
-                    className={`absolute left-0 text-[11px] tracking-[0.24em] uppercase font-medium text-[#78866B] transition-all duration-300 ${
-                      email ? "top-0" : "top-5"
-                    } peer-focus:top-0 peer-focus:text-[#FFB7C5]`}
-                  >
-                    Email
-                  </span>
-                </label>
-
-                <label className="relative block">
-                  <motion.span
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "100%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    className="absolute bottom-0 left-0 h-px bg-[#FDFCF0]/30"
-                  />
-                  <textarea
-                    name="message"
-                    value={message}
-                    onChange={(event) => setMessage(event.target.value)}
-                    className={`${inputBase} min-h-[140px] resize-y`}
-                    placeholder="Message"
-                    required
-                  />
-                  <span
-                    className={`absolute left-0 text-[11px] tracking-[0.24em] uppercase font-medium text-[#78866B] transition-all duration-300 ${
-                      message ? "top-0" : "top-5"
-                    } peer-focus:top-0 peer-focus:text-[#FFB7C5]`}
-                  >
-                    Message
-                  </span>
-                </label>
-
-                {hasError && (
-                  <p className="text-sm text-[#FFB7C5] font-medium">{state.message}</p>
-                )}
+                <div className="space-y-10">
+                  {[
+                    { name: "name", label: "Name", type: "text", value: name, setter: setName },
+                    { name: "email", label: "Email Address", type: "email", value: email, setter: setEmail },
+                    { name: "message", label: "Your Message", type: "textarea", value: message, setter: setMessage },
+                  ].map((field, idx) => (
+                    <div key={field.name} className="relative group">
+                      <p className="text-[9px] uppercase tracking-[0.5em] text-sage-green mb-2 font-bold transition-colors group-focus-within:text-[#FFB7C5]">
+                        {field.label}
+                      </p>
+                      {field.type === "textarea" ? (
+                        <textarea
+                          name={field.name}
+                          value={field.value}
+                          onChange={(e) => field.setter(e.target.value)}
+                          className="w-full bg-transparent border-b border-[#FDFCF0]/10 py-4 text-[#FDFCF0] outline-none placeholder:text-[#FDFCF0]/5 min-h-[120px] resize-none"
+                          required
+                        />
+                      ) : (
+                        <input
+                          type={field.type}
+                          name={field.name}
+                          value={field.value}
+                          onChange={(e) => field.setter(e.target.value)}
+                          className="w-full bg-transparent border-b border-[#FDFCF0]/10 py-4 text-[#FDFCF0] outline-none placeholder:text-[#FDFCF0]/5"
+                          required
+                        />
+                      )}
+                      {/* Underline Animation */}
+                      <motion.div
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 + idx * 0.1, duration: 0.8 }}
+                        className="absolute bottom-0 left-0 right-0 h-px bg-[#FDFCF0]/20 origin-left"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 h-px bg-[#FFB7C5] origin-center scale-x-0 group-focus-within:scale-x-100 transition-transform duration-700 ease-[0.23,1,0.32,1]" />
+                    </div>
+                  ))}
+                </div>
 
                 <motion.button
-                  whileHover="hover"
-                  whileTap={{ scale: 0.99 }}
+                  whileTap={{ scale: 0.98 }}
                   disabled={isPending}
-                  className="group relative w-full py-4 text-sm font-bold tracking-[0.22em] uppercase text-[#FDFCF0] border border-[#FDFCF0]/35 overflow-hidden disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="group relative w-full py-6 flex items-center justify-center overflow-hidden border border-[#FDFCF0]/20"
                 >
-                  <motion.span
-                    className="absolute inset-y-0 left-0 bg-[#E2725B]"
-                    variants={{ hover: { width: "100%" } }}
-                    initial={{ width: 0 }}
-                    transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
-                  />
-                  <span className="relative z-10">{isPending ? "Sending..." : "Send Message"}</span>
-                  <motion.span
-                    className="pointer-events-none absolute inset-0 border border-[#FFB7C5]"
-                    variants={{ hover: { scale: 1.015 } }}
-                    transition={{ duration: 0.35 }}
-                  />
+                  {/* Stitch-trace Border */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+                    <motion.rect
+                      x="0"
+                      y="0"
+                      width="100%"
+                      height="100%"
+                      fill="none"
+                      stroke="#FFB7C5"
+                      strokeWidth="1"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      whileHover={{ pathLength: 1, opacity: 1 }}
+                      transition={{ duration: 0.8, ease: "easeInOut" }}
+                      style={{ strokeDasharray: "10 5" }}
+                    />
+                  </svg>
+                  
+                  <span className="relative z-10 text-[11px] font-bold uppercase tracking-[0.5em] text-[#FDFCF0] group-hover:text-[#FFB7C5] transition-colors duration-300">
+                    {isPending ? "Sending Selection..." : "Send Message"}
+                  </span>
+                  <div className="absolute inset-0 bg-[#FDFCF0]/5 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
                 </motion.button>
               </motion.form>
             )}
           </AnimatePresence>
+
+          {/* Integrated Boutique Map */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative w-full aspect-video rounded-tl-[10rem] rounded-br-[4rem] overflow-hidden border border-[#FDFCF0]/10 shadow-2xl"
+          >
+            <iframe
+              title="NSBM Green University Map"
+              src={mapSrc}
+              className="w-full h-full grayscale invert contrast-[1.2] brightness-[0.7] saturate-0 opacity-40 hover:opacity-70 transition-opacity duration-1000"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-[#1B2E1E] via-transparent to-[#1B2E1E]/50" />
+            <div className="absolute bottom-8 left-8 p-6 bg-[#1F3322]/90 backdrop-blur-md border border-[#FDFCF0]/10 rounded-2xl max-w-xs">
+              <p className="text-[10px] uppercase tracking-widest text-sage-green font-bold mb-2">Our Sanctuary</p>
+              <p className="text-sm font-serif text-[#FDFCF0]">NSBM Green University, <br />Homagama, Sri Lanka</p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
