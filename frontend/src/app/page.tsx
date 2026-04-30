@@ -2,6 +2,7 @@
 
 import { Hero } from "@/components/Hero";
 import { CategoryRibbon } from "@/components/CategoryRibbon";
+import { AboutSection } from "@/components/AboutSection";
 import { useStitchCart } from "@/context/stitch-cart-context";
 import { useEffect, useState } from "react";
 
@@ -27,6 +28,9 @@ export default function Home() {
 
       {/* Category Ribbon / Visual Bridge */}
       <CategoryRibbon />
+
+      {/* About Section / Narrative Bridge */}
+      <AboutSection />
 
       {/* Feature Section / Menu Teaser */}
       <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full">
