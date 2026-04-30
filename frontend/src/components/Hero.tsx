@@ -7,7 +7,7 @@ import Image from "next/image";
 export const Hero = () => {
   return (
     <section 
-      className="relative w-full h-[calc(100vh-80px)] flex items-center justify-center overflow-hidden bg-white px-6 md:px-12"
+      className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-white px-6 md:px-12 pt-20"
     >
       {/* Layer 1: Background Interlocking Typography 'M&M' (Centered) */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none select-none">

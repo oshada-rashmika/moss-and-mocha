@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useStitchCart } from "@/context/stitch-cart-context";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -14,7 +15,9 @@ const navLinks = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { itemCount, items, subtotal, removeFromCart } = useStitchCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,115 +29,214 @@ export const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 left-0 right-0 z-[100] transition-all duration-300 ease-in-out ${
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-in-out ${
         scrolled
-          ? "py-3 bg-white/95 backdrop-blur-md border-b border-black/5 shadow-sm"
-          : "py-5 bg-white shadow-sm"
+          ? "py-3 bg-white border-b border-black/5 shadow-sm"
+          : "py-5 bg-white"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Logo Evolution */}
+        {/* Logo */}
         <Link href="/" className="relative z-50">
           <motion.h1
             className="font-serif font-bold tracking-tight"
-            style={{
-              fontSize: "clamp(1.25rem, 4vw, 2rem)",
-            }}
-            animate={{
-              scale: scrolled ? 0.95 : 1,
-            }}
+            style={{ fontSize: "clamp(1.25rem, 4vw, 1.75rem)" }}
+            animate={{ scale: scrolled ? 0.95 : 1 }}
           >
-            <span className="text-moss-green">Moss</span> <span className="text-hibiscus-pink">&</span> <span className="text-moss-green">Mocha</span>
+            <span className="text-sage-green">Moss</span>{" "}
+            <span className="text-hibiscus-pink italic font-serif">&</span>{" "}
+            <span className="text-sage-green">Mocha</span>
           </motion.h1>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-10">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="relative group py-2"
-            >
-              <span className="text-[#1A1A1A] group-hover:text-moss-green transition-colors duration-300 font-semibold tracking-wide uppercase text-sm">
-                {link.name}
-              </span>
-              
-              {/* Stitch Animation: Organic blooming line */}
-              <motion.span 
-                className="absolute bottom-0 left-0 right-0 h-[2px] bg-moss-green origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-700 cubic-bezier(0.23, 1, 0.32, 1)"
-                style={{
-                  boxShadow: "0 0 12px var(--color-moss-green)"
-                }}
-              />
-              
-              {/* Soft Glow Interaction */}
-              <div className="absolute inset-0 -z-10 bg-moss-green opacity-0 group-hover:opacity-5 blur-2xl transition-all duration-700 rounded-full scale-50 group-hover:scale-150" />
-            </Link>
-          ))}
+          <div className="flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="relative group py-2"
+              >
+                <span className="text-[#1A1A1A] group-hover:text-sage-green transition-colors duration-500 font-serif font-medium tracking-wide text-sm">
+                  {link.name}
+                </span>
+                
+                {/* Underline Reveal */}
+                <motion.span 
+                  className="absolute bottom-1 left-0 right-0 h-[1px] bg-sage-green origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 cubic-bezier(0.23, 1, 0.32, 1)"
+                />
+              </Link>
+            ))}
+          </div>
+
+          {/* Cart Trigger */}
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="relative p-2 group hover:scale-110 transition-transform duration-300"
+            aria-label="View Cart"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            {itemCount > 0 && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute top-0 right-0 w-4 h-4 bg-terracotta text-white text-[9px] font-bold flex items-center justify-center rounded-full"
+              >
+                {itemCount}
+              </motion.span>
+            )}
+          </button>
         </div>
 
-        {/* Mobile Trigger */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden relative z-50 p-2 focus:outline-none"
-          aria-label="Toggle Menu"
-        >
-          <div className="relative w-8 h-8">
-             <Image 
-                src="/menu.png" 
-                alt="Menu" 
-                fill 
-                className={`object-contain transition-all duration-700 ${isOpen ? 'rotate-180 scale-90 invert' : 'rotate-0'}`}
-             />
-          </div>
-        </button>
+        {/* Mobile Actions */}
+        <div className="flex md:hidden items-center gap-4">
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="relative p-2"
+            aria-label="View Cart"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            {itemCount > 0 && (
+              <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-terracotta text-white text-[8px] font-bold flex items-center justify-center rounded-full">
+                {itemCount}
+              </span>
+            )}
+          </button>
+          
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="relative z-50 p-2 focus:outline-none"
+            aria-label="Toggle Menu"
+          >
+            <div className="flex flex-col gap-1.5 w-6">
+              <motion.span 
+                animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 7 : 0 }}
+                className="w-full h-px bg-[#1A1A1A]" 
+              />
+              <motion.span 
+                animate={{ opacity: isOpen ? 0 : 1 }}
+                className="w-full h-px bg-[#1A1A1A]" 
+              />
+              <motion.span 
+                animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? -7 : 0 }}
+                className="w-full h-px bg-[#1A1A1A]" 
+              />
+            </div>
+          </button>
+        </div>
 
-        {/* Mobile Drawer */}
-        <AnimatePresence mode="wait">
+        {/* Mobile Menu Drawer */}
+        <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
-              animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
-              exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
-              transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-              className="fixed inset-0 z-40 md:hidden bg-white flex flex-col items-center justify-center"
+              initial={{ opacity: 0, x: "100%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+              className="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center"
             >
               <div className="flex flex-col items-center gap-10">
                 {navLinks.map((link, index) => (
                   <motion.div
                     key={link.name}
-                    initial={{ opacity: 0, y: 40, rotate: -15, scale: 0.9 }}
-                    animate={{ 
-                      opacity: 1, 
-                      y: 0, 
-                      rotate: 0,
-                      scale: 1,
-                      transition: { 
-                        delay: 0.1 * index + 0.4,
-                        duration: 0.8,
-                        ease: [0.23, 1, 0.32, 1]
-                      } 
-                    }}
-                    exit={{ opacity: 0, y: 20, rotate: 5 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
                   >
                     <Link
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="text-4xl font-serif text-[#1A1A1A] hover:text-moss-green transition-all duration-300 relative group"
+                      className="text-4xl font-serif text-[#1A1A1A] hover:text-sage-green transition-all duration-300"
                     >
                       {link.name}
-                      <span className="absolute -bottom-2 left-0 w-0 h-px bg-moss-green group-hover:w-full transition-all duration-500" />
                     </Link>
                   </motion.div>
                 ))}
               </div>
-              
-              {/* Decorative Background Element */}
-              <div className="absolute top-0 right-0 p-12 -z-10 opacity-5">
-                 <div className="w-64 h-64 bg-moss-green rounded-full blur-3xl animate-pulse" />
-              </div>
             </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Cart Drawer */}
+        <AnimatePresence>
+          {isCartOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsCartOpen(false)}
+                className="fixed inset-0 z-[110] bg-black/20 backdrop-blur-sm"
+              />
+              <motion.div
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+                className="fixed top-0 right-0 bottom-0 z-[120] w-full max-w-md bg-white shadow-2xl flex flex-col"
+              >
+                <div className="p-8 border-b border-black/5 flex items-center justify-between">
+                  <h2 className="font-serif text-2xl text-[#1A1A1A]">Your Selection</h2>
+                  <button 
+                    onClick={() => setIsCartOpen(false)}
+                    className="p-2 hover:rotate-90 transition-transform duration-300"
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M18 6 6 18M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-8 space-y-8">
+                  {items.length === 0 ? (
+                    <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
+                      <p className="font-serif text-lg text-black/40 italic">Your bag is empty.</p>
+                      <button 
+                        onClick={() => setIsCartOpen(false)}
+                        className="text-xs font-bold uppercase tracking-widest text-terracotta border-b border-terracotta/30 pb-1"
+                      >
+                        Start Browsing
+                      </button>
+                    </div>
+                  ) : (
+                    items.map((item) => (
+                      <div key={item.id} className="flex items-start gap-4 group">
+                        <div className="flex-1 space-y-1">
+                          <h4 className="font-serif text-[#1A1A1A] group-hover:text-sage-green transition-colors">{item.name}</h4>
+                          <p className="text-xs text-black/40 font-bold uppercase tracking-widest">Qty: {item.quantity}</p>
+                        </div>
+                        <div className="text-right space-y-2">
+                          <p className="text-sm font-bold text-[#1A1A1A]">LKR {item.price.toLocaleString()}</p>
+                          <button 
+                            onClick={() => removeFromCart(item.id)}
+                            className="text-[10px] uppercase tracking-widest text-terracotta/60 hover:text-terracotta transition-colors"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {items.length > 0 && (
+                  <div className="p-8 bg-gray-50 space-y-6">
+                    <div className="flex items-center justify-between">
+                      <span className="font-serif text-lg text-[#1A1A1A]">Subtotal</span>
+                      <span className="font-bold text-lg text-[#1A1A1A]">LKR {subtotal.toLocaleString()}</span>
+                    </div>
+                    <button className="w-full bg-forest-green text-cream py-5 font-bold uppercase tracking-[0.3em] text-xs hover:bg-[#1A1A1A] transition-colors duration-500">
+                      Checkout
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
