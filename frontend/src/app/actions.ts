@@ -12,6 +12,16 @@ export interface FeaturedProduct {
   subCategory: string;
 }
 
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  mainCategory: "BREWS" | "BOTANICALS" | "BOBA" | "AESTHETIC_LABELS" | "BARISTA_CLASSICS";
+  subCategory: string;
+  isSpecial: boolean;
+}
+
 export interface Review {
   id: string;
   name: string;
@@ -31,6 +41,20 @@ export async function getFeaturedProducts(): Promise<FeaturedProduct[]> {
     return result.rows;
   } catch (error) {
     console.error("Error fetching featured products:", error);
+    return [];
+  }
+}
+
+export async function getAllProducts(): Promise<Product[]> {
+  try {
+    const result = await query(
+      `SELECT id, name, price, image, "mainCategory", "subCategory", "isSpecial" 
+       FROM "Product" 
+       ORDER BY name ASC;`
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching all products:", error);
     return [];
   }
 }
