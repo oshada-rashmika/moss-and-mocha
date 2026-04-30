@@ -23,12 +23,16 @@ const ProductCard = ({ product, index }: { product: FeaturedProduct; index: numb
     offset: ["start end", "end start"],
   });
 
-  // Parallax Y-offset for the image
-  const yImage = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+  // Keep subtle parallax while overscanning so no edge strip appears.
+  const yImage = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
 
   return (
     <motion.div
       ref={cardRef}
+      initial="hidden"
+      whileInView="visible"
+      whileHover="hover"
+      viewport={{ once: false, amount: 0.2 }}
       variants={{
         hidden: { opacity: 0, y: 50, scale: 0.95 },
         visible: {
@@ -42,28 +46,35 @@ const ProductCard = ({ product, index }: { product: FeaturedProduct; index: numb
             delay: index * 0.1,
           },
         },
+        hover: {
+          y: -10,
+          transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] }
+        }
       }}
-      className={`flex-shrink-0 w-[85vw] md:w-auto snap-center flex flex-col gap-6 group cursor-pointer will-change-transform ${
+      className={`flex-shrink-0 w-[85vw] md:w-auto snap-center flex flex-col gap-6 group cursor-pointer will-change-transform transform-gpu ${
         index === 1 ? "md:mt-24" : ""
       }`}
     >
-      <div className="relative aspect-[4/5] overflow-hidden bg-[#F5F5DC]/30">
+      {/* Visual Container (Image + Border) */}
+      <div className="relative aspect-[4/5] overflow-hidden bg-[#F5F5DC]/30 block">
         <motion.div
           style={{ y: yImage }}
-          whileHover={{ scale: 1.05 }}
+          variants={{
+            hover: { scale: 1.05 }
+          }}
           transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          className="relative w-full h-full"
+          className="absolute inset-x-0 -top-[12%] h-[124%] block"
         >
           <Image
             src={product.image || "/hero.png"}
             alt={product.name}
             fill
-            className="object-cover"
+            className="object-cover block"
           />
         </motion.div>
 
-        {/* Stitch Border Animation */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+        {/* Stitch Border Animation - Explicitly hidden in idle state */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-hidden">
           <motion.rect
             x="0"
             y="0"
@@ -73,19 +84,20 @@ const ProductCard = ({ product, index }: { product: FeaturedProduct; index: numb
             stroke="var(--color-sage-green)"
             strokeWidth="2"
             initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 0, opacity: 0 }}
             variants={{
               hover: { pathLength: 1, opacity: 1 },
             }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="group-hover:opacity-100 transition-opacity duration-300"
+            transition={{ duration: 0.6, ease: "easeInOut" }}
             style={{ strokeDasharray: "4 6" }}
           />
         </svg>
       </div>
 
+      {/* Description Content - Stable within the flex column */}
       <div className="flex justify-between items-start">
         <div className="space-y-1">
-          <p className="text-xs text-black/40 uppercase tracking-[0.2em]">
+          <p className="text-xs text-black/40 uppercase tracking-[0.2em] font-sans">
             {product.subCategory}
           </p>
           <h3 className="text-xl font-serif text-[#1A1A1A]">
