@@ -12,6 +12,7 @@ enum MainCategory {
   BOTANICALS
   AESTHETIC_LABELS
   BARISTA_CLASSICS
+  BOBA
 }
 
 enum OrderStatus {
